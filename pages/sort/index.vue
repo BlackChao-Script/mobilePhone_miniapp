@@ -1,7 +1,7 @@
 <template>
-	<div class="sort">
+	<view class="sort">
 		<text>{{ title }}</text>
-	</div>
+	</view>   
 </template>
 
 <script>

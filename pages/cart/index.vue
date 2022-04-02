@@ -1,7 +1,7 @@
 <template>
-	<div class="cart">
+	<view class="cart">
 		购物车
-	</div>
+	</view>
 </template>
 
 <script>

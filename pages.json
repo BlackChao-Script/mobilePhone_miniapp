@@ -28,14 +28,14 @@
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "mobilePhone商城",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"navigationBarBackgroundColor": "#FFFFFF",
+		"backgroundColor": "#FFFFFF"
 	},
 	"tabBar": {
 		"color": "#909399",
 		"selectedColor": "#d4237a",
 		"borderStyle": "black",
-		"backgroundColor": "#ffffff",
+		"backgroundColor": "#FFFFFF",
 		"list":[{
 			"pagePath":"pages/index/index",
 			"iconPath":"static/index.png",
