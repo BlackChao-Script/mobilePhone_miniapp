@@ -10,14 +10,12 @@
 
 <style lang="scss">
 .serch {
-	position: relative;
 	.serch_content {
 		width: 90%;
 		display: flex;
-		position: absolute;
-		left: 50%;
+		margin: 20rpx;
+		margin-left: 50%;
 		transform: translate(-50%);
-		margin-top: 10rpx;
 		justify-content: center;
 		background-color: $uni-bg-color;
 		border-radius: 30%;
