@@ -6,7 +6,7 @@
 			<input class="u-border-bottom" v-model="user_name" placeholder="用户名" />
 			<input class="u-border-bottom" type="password" v-model="password" placeholder="请输入密码" />
 			<input class="u-border-bottom" type="password" v-model="password_confirmation" placeholder="请确定密码" />
-			<button @tap="submit" class="getCaptcha">完成注册</button>
+			<button @tap="submitThrottle" class="getCaptcha">完成注册</button>
 		</view>
 	</view>
 </template>
@@ -17,16 +17,15 @@ import { register } from '@/utils/http.api.js'
 export default {
 	data() {
 		return {
-			// 用户名
 			user_name: '',
-			// 密码
 			password: '',
-			// 确定密码
 			password_confirmation: ''
 		}
 	},
 	methods: {
-		// 完成注册提交表单
+		submitThrottle() {
+			uni.$u.debounce(this.submit, 500)
+		},
 		async submit() {
 			if (!this.user_name || !this.password) {
 				uni.$u.toast('用户名或密码不能为空')

@@ -3,11 +3,11 @@
 		<!-- 搜索 -->
 		<Serch />
 		<!-- 轮播图 -->
-		<Swipers />
+		<Swipers :swipersData="swipersData" />
 		<!-- 导航栏 -->
 		<SortNav />
 		<!-- 商品列表 -->
-		<GoodsList :goodsListData="goodsListData" />
+		<GoodsList :goodsListData="goodsListData" :loading="loading" />
 		<!-- 返回顶部 -->
 		<view class="blkTop" v-if="showBlkTop" @click="clickBlkTop">↑️</view>
 	</view>
@@ -17,8 +17,8 @@
 import Serch from '@/components/index/Serch.vue'
 import Swipers from '@/components/index/Swipers.vue'
 import SortNav from '@/components/index/SortNav.vue'
-import GoodsList from '@/components/index/GoodsList.vue'
-import { getGoods } from '@/utils/http.api.js'
+import GoodsList from '@/components/index/GoodsList.vue' 
+import { getGoods, getSwipers } from '@/utils/http.api.js'
 
 export default {
 	components: {
@@ -29,16 +29,19 @@ export default {
 	},
 	data() {
 		return {
+			swipersData: [],
 			goodsListData: [],
 			pageData: {
 				pageNum: 1,
 				pageSize: 6
 			},
-			showBlkTop: false
+			showBlkTop: false,
+			loading: true
 		}
 	},
 	onLoad() {
 		this.getGoodsListData()
+		this.getSwipersData()
 	},
 	// 触底钩子
 	onReachBottom() {
@@ -47,16 +50,25 @@ export default {
 	},
 	// 监听页面滚动钩子
 	onPageScroll(e) {
-		if (e.scrollTop >= 800) {
+		if (e.scrollTop >= 600) {
 			this.showBlkTop = true
 		} else {
 			this.showBlkTop = false
 		}
 	},
 	methods: {
+		async getSwipersData() {
+			const res = await getSwipers()
+			const imgSrc = [] 
+			res.list.forEach(element => {
+				imgSrc.push(element.carousel_src)
+			})
+			this.swipersData = imgSrc
+		},
 		async getGoodsListData() {
-			const data = this.pageData
+			const data = this.pageData 
 			const res = await getGoods({ data })
+			this.loading = false
 			this.goodsListData = [...this.goodsListData, ...res.list]
 		},
 		clickBlkTop() {

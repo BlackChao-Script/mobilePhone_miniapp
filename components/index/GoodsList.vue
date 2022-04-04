@@ -2,12 +2,13 @@
 	<view class="goodsList">
 		<text class="goodsList_title">🔥热销商品</text>
 		<view class="goodsLIst_box">
-			<view class="box_item" v-for="item in goodsListData" :key="item.id" @click="ClickToGoodsDet(item.id)">
+			<view class="box_item" v-for="(item, index) in goodsListData" :key="item.id" @click="ClickToGoodsDet(item.id)">
 				<view class="box_img"><image :src="item.goods_img" mode="aspectFit"></image></view>
 				<view class="box_name">{{ item.goods_name }}</view>
 				<view class="box_price">￥{{ item.goods_price }}</view>
 			</view>
 		</view>
+		<u-loading-icon :show="loading" color="#d4237a"></u-loading-icon>
 	</view>
 </template>
 
@@ -17,17 +18,27 @@ export default {
 		return {}
 	},
 	props: {
-		goodsListData: Array
+		goodsListData: Array,
+		loading: Boolean
 	},
 	onLoad() {},
 	methods: {
 		ClickToGoodsDet(id) {
-			this.$u.route({
-				url: 'pages/goodsDet/index',
-				params: {
-					id
-				}
-			})
+			if (this.$store.state.token == '') {
+				uni.$u.toast('请先登录')
+				setTimeout(() => {
+					this.$u.route({
+						url: 'pages/auth/login'
+					})
+				}, 1500)
+			} else {
+				this.$u.route({
+					url: 'pages/goodsDet/index',
+					params: {
+						id
+					}
+				})
+			}
 		}
 	}
 }

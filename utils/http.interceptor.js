@@ -10,7 +10,9 @@ module.exports = (vm) => {
 	// 请求拦截
 	uni.$u.http.interceptors.request.use((config) => {
 		config.data = config.data || {}
-		config.header.token = vm.$store.state.token
+		if (config?.custom?.auth) {
+			config.header.Authorization =  vm.$store.state.token
+		}
 		return config
 	}, config => {
 		return Promise.reject(config)
@@ -39,4 +41,5 @@ module.exports = (vm) => {
 		uni.$u.toast(response.data.message)
 		return Promise.reject(response)
 	})
+	
 }

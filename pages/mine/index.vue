@@ -4,19 +4,25 @@
 			<view class="mine_card" v-if="token !== ''">
 				<view class="card_img"><u-avatar :src="img" size="70"></u-avatar></view>
 				<view class="card_content">
-					<text>昵称: {{ userInfo.user_name }}</text>
-					<text>登录名: {{ userInfo.user_name }}</text>
+					<text>
+						昵称:
+						<text style="margin-left: 20rpx;">{{ userInfo.user_name }}</text>
+					</text>
+					<text>
+						登录名:
+						<text style="margin-left: 20rpx;">{{ userInfo.user_name }}</text>
+					</text>
 				</view>
 			</view>
 			<view class="mine_card" v-else @click="clickToLogin">
-				<view class="card_img"><u-avatar src="img" size="70"></u-avatar></view>
+				<view class="card_img"><u-avatar size="70"></u-avatar></view>
 				<view class="card_content"><text style="margin-top: 50rpx; font-size: 35rpx;">点击登录</text></view>
 			</view>
 		</view>
 		<view class="mine_list">
-			<view class="list_item" v-for="(item, index) in mineListData" :key="index">
+			<view class="list_item" v-for="(item, index) in mineListData" @tap="toMinePage(item.path)" :key="index">
 				<view class="item_box">
-					<view class="box_name">{{ item }}</view>
+					<view class="box_name">{{ item.name }}</view>
 					<view class="box_icon"><u-icon name="arrow-right"></u-icon></view>
 				</view>
 				<u-line></u-line>
@@ -26,11 +32,30 @@
 </template>
 
 <script>
+import { getUserInfo } from '@/utils/http.api.js'
+
 export default {
 	data() {
 		return {
 			img: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-			mineListData: ['我的订单', '账号管理', '地址管理', '关于我们'],
+			mineListData: [
+				{
+					name: '我的订单',
+					path: 'order'
+				},
+				{
+					name: '账号管理',
+					path: 'account'
+				},
+				{
+					name: '地址管理',
+					path: 'address'
+				},
+				{
+					name: '关于我们',
+					path: 'about'
+				}
+			],
 			userInfo: {},
 			token: ''
 		}
@@ -38,11 +63,34 @@ export default {
 	onLoad() {
 		this.token = this.$store.state.token
 	},
+	onShow() {
+		this.getUserInfoData()
+	},
 	methods: {
+		async getUserInfoData() {
+			if (this.$store.state.token !== '') {
+				const res = await getUserInfo({ custom: { auth: true } })
+				this.userInfo = res
+			}
+		},
 		clickToLogin() {
 			this.$u.route({
 				url: 'pages/auth/login'
 			})
+		},
+		toMinePage(path) {
+			if (this.$store.state.token == '') {
+				uni.$u.toast('请先登录')
+				setTimeout(() => {
+					this.$u.route({
+						url: `pages/auth/login`
+					})
+				}, 1500)
+			} else {
+				this.$u.route({
+					url: `pages/mine/${path}`
+				})
+			}
 		}
 	}
 }
@@ -60,6 +108,7 @@ export default {
 			height: 240rpx;
 			background-color: $uni-color-error;
 			border-radius: 10rpx;
+			box-shadow: -1px -1px 15rpx #d4237a;
 			.card_img {
 				width: 30%;
 				display: flex;

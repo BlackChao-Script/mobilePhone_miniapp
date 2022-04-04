@@ -1,11 +1,5 @@
 {
 	"pages": [{
-			"path": "pages/mine/index",
-			"style": {
-				"navigationBarTitleText": "我的"
-			}
-		},
-		{
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "首页"
@@ -30,7 +24,13 @@
 			}
 		},
 		{
-			"path": "pages/auth/login",
+			"path": "pages/mine/index",
+			"style": {
+				"navigationBarTitleText": "我的"
+			}
+		},
+		{
+			"path": "pages/auth/login", 
 			"style": {
 				"navigationBarTitleText": "登录"
 			}
@@ -39,6 +39,12 @@
 			"path": "pages/auth/register",
 			"style": {
 				"navigationBarTitleText": "注册"
+			}
+		},
+		{
+			"path": "pages/mine/account",
+			"style": {
+				"navigationBarTitleText": "账号管理"
 			}
 		}
 	],
