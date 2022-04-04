@@ -1,5 +1,11 @@
 {
 	"pages": [{
+			"path": "pages/mine/index",
+			"style": {
+				"navigationBarTitleText": "我的"
+			}
+		},
+		{
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "首页"
@@ -18,12 +24,23 @@
 			}
 		},
 		{
-			"path": "pages/mine/index",
+			"path": "pages/goodsDet/index",
 			"style": {
-				"navigationBarTitleText": "我的"
+				"navigationBarTitleText": "商品详细"
+			}
+		},
+		{
+			"path": "pages/auth/login",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
+		},
+		{
+			"path": "pages/auth/register",
+			"style": {
+				"navigationBarTitleText": "注册"
 			}
 		}
-
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

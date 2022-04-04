@@ -11,6 +11,9 @@ const store = new Vuex.Store({
 	mutations: {
 		updateToken(state, str) {
 			state.token = str
+		},
+		remdateToken(state) {
+			state.token = ''
 		}
 	},
 	plugins: [

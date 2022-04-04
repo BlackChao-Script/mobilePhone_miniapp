@@ -7,7 +7,7 @@
 		<!-- 导航栏 -->
 		<SortNav />
 		<!-- 商品列表 -->
-		<GoodsList :goodsListData="goodsListData" :loading="loading" />
+		<GoodsList :goodsListData="goodsListData" />
 		<!-- 返回顶部 -->
 		<view class="blkTop" v-if="showBlkTop" @click="clickBlkTop">↑️</view>
 	</view>
@@ -34,8 +34,7 @@ export default {
 				pageNum: 1,
 				pageSize: 6
 			},
-			showBlkTop: false,
-			loading: false
+			showBlkTop: false
 		}
 	},
 	onLoad() {
@@ -56,10 +55,8 @@ export default {
 	},
 	methods: {
 		async getGoodsListData() {
-			this.loading = true
 			const data = this.pageData
 			const res = await getGoods({ data })
-			this.loading = false
 			this.goodsListData = [...this.goodsListData, ...res.list]
 		},
 		clickBlkTop() {

@@ -1,26 +1,13 @@
 <template>
 	<view class="goodsList">
 		<text class="goodsList_title">🔥热销商品</text>
-		<!-- #ifdef H5 -->
 		<view class="goodsLIst_box">
-			<view class="box_item" v-for="(item,index) in goodsListData.length !== 0 ? goodsListData : 4" :key="index">
-				<view class="box_img"><image :src="item.goods_img" mode="aspectFit"></image></view>
-				<view class="box_name">{{ item.goods_name }}</view>
-				<view class="box_price">￥{{ item.goods_price }}</view>
-			</view>
-		</view> 
-		<!-- #endif -->
-		<!-- #ifdef MP-WEIXIN -->
-		<view class="goodsLIst_box">
-			<view class="box_item" v-for="item in goodsListData" :key="item.id">
+			<view class="box_item" v-for="item in goodsListData" :key="item.id" @click="ClickToGoodsDet(item.id)">
 				<view class="box_img"><image :src="item.goods_img" mode="aspectFit"></image></view>
 				<view class="box_name">{{ item.goods_name }}</view>
 				<view class="box_price">￥{{ item.goods_price }}</view>
 			</view>
 		</view>
-		<!-- #endif -->
-		<!-- 骨架�-->
-		<u-skeleton bg-color="#fff" :loading="loading" :animation="true"></u-skeleton>
 	</view>
 </template>
 
@@ -30,10 +17,19 @@ export default {
 		return {}
 	},
 	props: {
-		goodsListData: Array,
-		loading: Boolean
+		goodsListData: Array
 	},
-	onLoad() {}
+	onLoad() {},
+	methods: {
+		ClickToGoodsDet(id) {
+			this.$u.route({
+				url: 'pages/goodsDet/index',
+				params: {
+					id
+				}
+			})
+		}
+	}
 }
 </script>
 
@@ -67,7 +63,7 @@ export default {
 			.box_name {
 				font-size: 28rpx;
 				margin-top: 20rpx;
-			} 
+			}
 			.box_price {
 				margin-top: 20rpx;
 				font-size: 25rpx;

@@ -7,3 +7,5 @@ export const register = (params, config = {}) => http.post('/user/register', par
 
 //获取商品列表
 export const getGoods = (data) => http.get('/goods', data)
+// 获取商品详细
+export const getGoodsDet = (data, config = {}) => http.get('/goods/getgoodsDet', data, config)

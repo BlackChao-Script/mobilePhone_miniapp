@@ -2,7 +2,6 @@
 module.exports = (vm) => {
 	// 初始化请求配置
 	uni.$u.http.setConfig((config) => {
-		/* config 为默认全局配置*/
 		config.baseURL = 'http://localhost:8080'
 		config.dataType = 'json'
 		return config
@@ -11,7 +10,6 @@ module.exports = (vm) => {
 	// 请求拦截
 	uni.$u.http.interceptors.request.use((config) => {
 		config.data = config.data || {}
-		// 可以在此通过vm引用vuex中的变量，具体值在vm.$store.state中
 		config.header.token = vm.$store.state.token
 		return config
 	}, config => {
@@ -20,12 +18,10 @@ module.exports = (vm) => {
 
 	// 响应拦截   
 	uni.$u.http.interceptors.response.use((response) => {
-		// 响应状态码
 		const {
 			statusCode,
 			data
 		} = response
-		// 自定义参数
 		const custom = response.config?.custom
 
 		if (statusCode !== 200) {
