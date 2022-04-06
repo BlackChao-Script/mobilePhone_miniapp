@@ -11,7 +11,7 @@ module.exports = (vm) => {
 	uni.$u.http.interceptors.request.use((config) => {
 		config.data = config.data || {}
 		if (config?.custom?.auth) {
-			config.header.Authorization =  vm.$store.state.token
+			config.header.Authorization = vm.$store.state.token
 		}
 		return config
 	}, config => {
@@ -38,8 +38,18 @@ module.exports = (vm) => {
 		}
 		return data.result === undefined ? {} : data.result
 	}, (response) => {
-		uni.$u.toast(response.data.message)
+		if (response.data.message == 'token已过期') {
+			const http = uni.$u.http
+			uni.$u.toast('token已过期，请重新登录')
+			setTimeout(() => {
+				vm.$u.route({
+					url: 'pages/auth/login'
+				})
+			}, 1500)
+		} else {
+			uni.$u.toast(response.data.message)
+		}
 		return Promise.reject(response)
 	})
-	
+
 }

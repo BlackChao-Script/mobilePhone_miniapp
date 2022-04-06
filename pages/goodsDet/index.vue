@@ -28,19 +28,20 @@
 				<text class="price1">￥{{ goodsInfo.goods_price + 100 }}</text>
 			</view>
 		</view>
-		<view class="goodsDet_nav">
+		<view class="goodsDet_nav" v-if="!loading">
 			<view class="nav_icons">
 				<view class="icon">
 					<view class="icon_icon"><u-icon name="star-fill" size="25"></u-icon></view>
 					<view class="icon_text">收藏</view>
 				</view>
-				<view class="icon">
+				<view class="icon" @tap="toCart">
 					<view class="icon_icon"><u-icon name="car-fill" size="25"></u-icon></view>
 					<view class="icon_text">购物车</view>
+					<view class="icon_num">{{ cartList.length }}</view>
 				</view>
 			</view>
 			<view class="nav_buttons">
-				<view class="button" style="background-color:#d4237a; border-radius: 10% 0 0 10%;">加入购物车</view>
+				<view class="button" @tap="addCartData" style="background-color:#d4237a; border-radius: 10% 0 0 10%;">加入购物车</view>
 				<view class="button" style="background-color: #d40a4a; border-radius: 0 10% 10% 0;">立即购买</view>
 			</view>
 		</view>
@@ -48,18 +49,21 @@
 </template>
 
 <script>
-import { getGoodsDet } from '@/utils/http.api.js'
+import { getGoodsDet, addCart, getCartList } from '@/utils/http.api.js'
 
 export default {
 	data() {
 		return {
 			goodsData: {},
 			goodsInfo: {},
+			cartList: [],
+			num: 0,
 			loading: true
 		}
 	},
 	onLoad(options) {
 		this.getGoodsDet(options.id)
+		this.getCartNum()
 	},
 	methods: {
 		async getGoodsDet(id) {
@@ -72,6 +76,31 @@ export default {
 			goods_info.createGoodsTime = goods_info.createGoodsTime.split('T')[0]
 			this.goodsData = data
 			this.goodsInfo = goods_info
+		},
+		toCart() {
+			this.$u.route({
+				type: 'reLaunch',
+				url: 'pages/cart/index'
+			})
+		},
+		async addCartData() {
+			const data = this.cartList.find(item => {
+				return item.goods_info.id == this.goodsData.goods_id
+			})
+			if (data != undefined || this.num == 1) {
+				uni.$u.toast('此商品已添加,无须重复添加')
+			} else {
+				const params = {
+					goods_id: this.goodsData.goods_id
+				}
+				await addCart(params, { custom: { auth: true } })
+				this.num = 1
+				this.getCartNum()
+			}
+		},
+		async getCartNum() {
+			const res = await getCartList({ custom: { auth: true } })
+			this.cartList = res.list
 		}
 	}
 }
@@ -140,10 +169,25 @@ export default {
 			display: flex;
 			justify-content: space-around;
 			.icon {
+				position: relative;
 				display: flex;
 				flex-direction: column;
 				align-items: center;
 				font-size: 25rpx;
+				.icon_num {
+					position: absolute;
+					top: -20rpx;
+					right: -20rpx;
+					width: 45rpx;
+					height: 45rpx;
+					font-size: 20rpx;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					color: $uni-text-color-inverse;
+					border-radius: $uni-border-radius-circle;
+					background-color: $uni-color-error;
+				}
 			}
 		}
 		.nav_buttons {

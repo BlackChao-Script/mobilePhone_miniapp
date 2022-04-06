@@ -1,7 +1,7 @@
 <template>
 	<view class="mine">
 		<view class="mine_box">
-			<view class="mine_card" v-if="token !== ''">
+			<view class="mine_card" v-if="loading">
 				<view class="card_img"><u-avatar :src="img" size="70"></u-avatar></view>
 				<view class="card_content">
 					<text>
@@ -57,6 +57,7 @@ export default {
 				}
 			],
 			userInfo: {},
+			loading: false,
 			token: ''
 		}
 	},
@@ -70,6 +71,7 @@ export default {
 		async getUserInfoData() {
 			if (this.$store.state.token !== '') {
 				const res = await getUserInfo({ custom: { auth: true } })
+				this.loading = true
 				this.userInfo = res
 			}
 		},

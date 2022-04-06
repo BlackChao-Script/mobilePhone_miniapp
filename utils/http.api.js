@@ -16,3 +16,8 @@ export const getSwipers = (params, config = {}) => http.get('/carousel', params,
 export const getGoods = (data) => http.get('/goods', data)
 // 获取商品详细
 export const getGoodsDet = (data, config = {}) => http.get('/goods/getgoodsDet', data, config)
+
+// 加入购物车
+export const addCart = (params, config = {}) => http.post('/cart/addcart', params, config)
+// 获取购物车列表
+export const getCartList = (data, config = {}) => http.get('/cart', data, config)
