@@ -37,7 +37,7 @@
 				<view class="icon" @tap="toCart">
 					<view class="icon_icon"><u-icon name="car-fill" size="25"></u-icon></view>
 					<view class="icon_text">购物车</view>
-					<view class="icon_num">{{ cartList.length }}</view>
+					<view class="icon_num" v-if="cartList.length !== 0">{{ cartList.length }}</view>
 				</view>
 			</view>
 			<view class="nav_buttons">

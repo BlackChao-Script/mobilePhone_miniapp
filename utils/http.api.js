@@ -7,7 +7,7 @@ export const register = (params, config = {}) => http.post('/user/register', par
 // 获取用户信息
 export const getUserInfo = (params, config = {}) => http.get('/user/userinfo', params, config)
 // 修改密码
-export const modifyPassword = (params, config = {}) => http.patch('/user/modify', params, config)
+export const modifyPassword = (params, config = {}) => http.put('/user/modify', params, config)
 
 // 获取轮播图数据
 export const getSwipers = (params, config = {}) => http.get('/carousel', params, config)
@@ -21,3 +21,11 @@ export const getGoodsDet = (data, config = {}) => http.get('/goods/getgoodsDet',
 export const addCart = (params, config = {}) => http.post('/cart/addcart', params, config)
 // 获取购物车列表
 export const getCartList = (data, config = {}) => http.get('/cart', data, config)
+// 删除购物车
+export const remCart = (id, params, config = {}) => http.delete(`cart/${id}`, params, config)
+// 全选
+export const selectAll = (params, config = {}) => http.post('/cart/selectAll', params, config)
+// 取消全选
+export const unselecAll = (params, config = {}) => http.post('/cart/unselectAll', params, config)
+// 更新购物车
+export const updateCart = (id, params, config = {}) => http.put(`/cart/${id}`, params, config)
