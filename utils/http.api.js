@@ -29,3 +29,8 @@ export const selectAll = (params, config = {}) => http.post('/cart/selectAll', p
 export const unselecAll = (params, config = {}) => http.post('/cart/unselectAll', params, config)
 // 更新购物车
 export const updateCart = (id, params, config = {}) => http.put(`/cart/${id}`, params, config)
+
+// 获取分类列表
+export const getSort = (data, config = {}) => http.get('/sort/getsort', data, config)
+// 获取分类详细
+export const getSortData = (data, config = {}) => http.get('/sort/getsortdata', data, config)

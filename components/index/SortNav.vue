@@ -47,6 +47,7 @@ export default {
 		justify-content: space-around;
 		align-items: center;
 		margin: 0 10rpx;
+		height: 100%;
 		.item_icon {
 			width: 50%;
 			height: 55%;

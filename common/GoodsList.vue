@@ -1,6 +1,6 @@
 <template>
 	<view class="goodsList">
-		<text class="goodsList_title">🔥热销商品</text>
+		<text class="goodsList_title" v-if="showTitle">🔥热销商品</text>
 		<view class="goodsLIst_box">
 			<view class="box_item" v-for="(item, index) in goodsListData" :key="item.id" @click="ClickToGoodsDet(item.id)">
 				<view class="box_img"><image :src="item.goods_img" mode="aspectFit"></image></view>
@@ -19,7 +19,8 @@ export default {
 	},
 	props: {
 		goodsListData: Array,
-		loading: Boolean
+		loading: Boolean,
+		showTitle: Boolean
 	},
 	onLoad() {},
 	methods: {

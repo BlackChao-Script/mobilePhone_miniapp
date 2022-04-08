@@ -7,7 +7,7 @@
 		<!-- 导航栏 -->
 		<SortNav />
 		<!-- 商品列表 -->
-		<GoodsList :goodsListData="goodsListData" :loading="loading" />
+		<GoodsList :goodsListData="goodsListData" :loading="loading" :showTitle="showTitle" />
 		<!-- 返回顶部 -->
 		<view class="blkTop" v-if="showBlkTop" @click="clickBlkTop">↑️</view>
 	</view>
@@ -17,7 +17,7 @@
 import Serch from '@/components/index/Serch.vue'
 import Swipers from '@/components/index/Swipers.vue'
 import SortNav from '@/components/index/SortNav.vue'
-import GoodsList from '@/components/index/GoodsList.vue' 
+import GoodsList from '@/common/GoodsList.vue'
 import { getGoods, getSwipers } from '@/utils/http.api.js'
 
 export default {
@@ -36,7 +36,8 @@ export default {
 				pageSize: 6
 			},
 			showBlkTop: false,
-			loading: true
+			loading: true,
+			showTitle: true
 		}
 	},
 	onLoad() {
@@ -59,14 +60,14 @@ export default {
 	methods: {
 		async getSwipersData() {
 			const res = await getSwipers()
-			const imgSrc = [] 
+			const imgSrc = []
 			res.list.forEach(element => {
 				imgSrc.push(element.carousel_src)
 			})
 			this.swipersData = imgSrc
 		},
 		async getGoodsListData() {
-			const data = this.pageData 
+			const data = this.pageData
 			const res = await getGoods({ data })
 			this.loading = false
 			this.goodsListData = [...this.goodsListData, ...res.list]

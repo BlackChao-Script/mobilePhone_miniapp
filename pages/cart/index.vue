@@ -1,8 +1,6 @@
 <template>
 	<view class="cart">
-		<u-empty mode="car" icon="http://cdn.uviewui.com/uview/empty/car.png" v-if="CartListData.length == 0">
-			<u-button @tap="toIndex" shape="circle" color="#d4237a">前往选购</u-button>
-		</u-empty>
+		<view v-if="CartListData.length == 0"><Empty @toIndex="toIndex" /></view>
 		<view class="cart_box" v-else>
 			<u-swipe-action>
 				<u-swipe-action-item v-for="item in CartListData" :key="item.id" :options="options" @click="remCartItem(item.id)">
@@ -22,25 +20,21 @@
 					</view>
 				</u-swipe-action-item>
 			</u-swipe-action>
-			<view class="cart_nav">
-				<view class="nav_checkbox">
-					<checkbox color="#d4237a" :checked="checkedAll" @tap="TapChecked" />
-					<text class="checkbox_text">全选</text>
-				</view>
-				<view class="nav_price">
-					合计:
-					<text class="price_text">￥{{ cartPriceTol }}</text>
-				</view>
-				<view class="nav_button">结算</view>
-			</view>
+			<CartNav :checkedAll="checkedAll" @TapChecked="TapChecked" :cartPriceTol="cartPriceTol" />
 		</view>
 	</view>
 </template>
 
 <script>
 import { getCartList, remCart, selectAll, unselecAll, updateCart } from '@/utils/http.api.js'
+import Empty from '@/components/cart/Empty.vue'
+import CartNav from '@/components/cart/CartNav.vue'
 
 export default {
+	components: {
+		CartNav,
+		Empty
+	},
 	data() {
 		return {
 			CartListData: [],
@@ -80,7 +74,6 @@ export default {
 		async getCartListData() {
 			const res = await getCartList({ custom: { auth: true } })
 			this.CartListData = res.list
-			// console.log(this.CartListData)
 			const selectBoolean = this.CartListData.every(i => i.selected == true)
 			if (selectBoolean) {
 				this.checkedAll = true
@@ -137,7 +130,6 @@ export default {
 			let params = {
 				number: value.detail.value * 1
 			}
-			console.log(params.number)
 			if (params.number <= 1) {
 				uni.$u.toast('最少剩1件商品')
 			} else if (params.number >= 5) {
@@ -219,58 +211,6 @@ export default {
 					top: 20rpx;
 					right: 40rpx;
 				}
-			}
-		}
-		/* #ifdef MP-WEIXIN */
-		.cart_nav {
-			position: fixed;
-			bottom: 0;
-			left: 0;
-			right: 0;
-			height: 100rpx;
-			background-color: #fff;
-			z-index: 999;
-		}
-		/* #endif */
-		/* #ifdef H5 */
-		.cart_nav {
-			position: fixed;
-			bottom: 50px;
-			left: 0;
-			right: 0;
-			height: 100rpx;
-			background-color: #fff;
-			z-index: 999;
-		}
-		/* #endif */
-		.cart_nav {
-			display: flex;
-			align-items: center;
-			.nav_checkbox {
-				width: 30%;
-				margin-left: 20rpx;
-				.checkbox_text {
-					margin-left: 10rpx;
-				}
-			}
-			.nav_price {
-				width: 40%;
-				.price_text {
-					color: $uni-color-error;
-					font-size: 35rpx;
-					margin-left: 10rpx;
-				}
-			}
-			.nav_button {
-				width: 30%;
-				height: 90%;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				margin-right: 20rpx;
-				border-radius: 15rpx;
-				color: #fff;
-				background-color: $uni-color-error;
 			}
 		}
 	}
