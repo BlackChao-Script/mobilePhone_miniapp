@@ -34,3 +34,10 @@ export const updateCart = (id, params, config = {}) => http.put(`/cart/${id}`, p
 export const getSort = (data, config = {}) => http.get('/sort/getsort', data, config)
 // 获取分类详细
 export const getSortData = (data, config = {}) => http.get('/sort/getsortdata', data, config)
+
+// 获取地址列表
+export const getAddress = (data, config = {}) => http.get('/address', data, config)
+// 添加地址
+export const addAddress = (params, config = {}) => http.post('/address/addtoaddress', params, config)
+// 删除地址
+export const remAddress = (id, params, config = {}) => http.delete(`/address/${id}`, params, config)

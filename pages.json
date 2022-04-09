@@ -30,7 +30,7 @@
 			}
 		},
 		{
-			"path": "pages/auth/login", 
+			"path": "pages/auth/login",
 			"style": {
 				"navigationBarTitleText": "登录"
 			}
@@ -45,6 +45,19 @@
 			"path": "pages/mine/account",
 			"style": {
 				"navigationBarTitleText": "账号管理"
+			}
+		},
+		{
+			"path": "pages/mine/address",
+			"style": {
+				"navigationBarTitleText": "地址管理"
+			}
+
+		},
+		{
+			"path": "pages/mine/addressForm",
+			"style":{
+				"navigationBarTitleText":"编辑地址"
 			}
 		}
 	],

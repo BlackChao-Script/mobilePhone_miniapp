@@ -5,7 +5,7 @@
 				<view class="names">用户名</view>
 				<view class="names">修改密码</view>
 			</view>
-			<view class="box_input"> 
+			<view class="box_input">
 				<view class="ints">{{ userInfo.user_name }}</view>
 				<view class="ints"><input class="u-border-bottom int" v-model="password" type="password" /></view>
 			</view>
@@ -42,7 +42,7 @@ export default {
 				const params = {
 					password: this.password
 				}
-				await modifyPassword({ params, custom: { auth: true } })
+				await modifyPassword(params, { custom: { auth: true } })
 				uni.$u.toast('保存成功')
 			}
 		},
