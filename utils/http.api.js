@@ -41,3 +41,7 @@ export const getAddress = (data, config = {}) => http.get('/address', data, conf
 export const addAddress = (params, config = {}) => http.post('/address/addtoaddress', params, config)
 // 删除地址
 export const remAddress = (id, params, config = {}) => http.delete(`/address/${id}`, params, config)
+// 设置默认地址
+export const defaultAddress = (id, params, config = {}) => http.put(`/address/def/${id}`, params, config)
+// 修改地址
+export const updateAddress = (id, params, config = {}) => http.put(`/address/${id}`, params, config)

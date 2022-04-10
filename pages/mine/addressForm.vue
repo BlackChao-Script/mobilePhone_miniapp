@@ -8,17 +8,20 @@
 					<u--input v-model="model1.userInfo.address" disabled disabledColor="#ffffff" placeholder="请选择地区" border="none"></u--input>
 					<u-icon slot="right" name="arrow-right"></u-icon>
 				</u-form-item>
-				<u-form-item label="默认" ref="item1"><u-switch v-model="is_default" @change="changeDefault"></u-switch></u-form-item>
+				<u-form-item v-if="this.addressId !== 0" label="默认" ref="item1"><u-switch v-model="is_default" @change="changeDefault" activeColor="#d4237a" ></u-switch></u-form-item>
 			</u--form>
 		</view>
 		<u-picker :show="showAddress" ref="uPicker" :columns="columns" @confirm="confirm" @cancel="cancelPicker" @change="changeHandler"></u-picker>
-		<view class="addressform_button"><view class="button" @tap="sumAddressFrom">保存</view></view>
+		<view class="addressform_button">
+			<view class="buttona" v-if="this.addressId !== 0" @tap="remAddress">删除</view>
+			<view class="button" @tap="sumAddressFrom">保存</view>
+		</view>
 	</view>
 </template>
 
 <script>
 import { columns, columnData } from '@/utils/addressData.js'
-import { addAddress } from '@/utils/http.api.js'
+import { getAddress, addAddress, remAddress, defaultAddress, updateAddress } from '@/utils/http.api.js'
 
 export default {
 	data() {
@@ -34,6 +37,8 @@ export default {
 				}
 			},
 			is_default: false,
+			showRemAddress: false,
+			addressId: 0,
 			rules: {
 				'userInfo.consignee': {
 					type: 'string',
@@ -63,6 +68,17 @@ export default {
 			}
 		}
 	},
+	onLoad(option) {
+		const ty = Object.keys(option)
+		if (ty.length !== 0) {
+			const data = JSON.parse(option.data)
+			this.model1.userInfo.consignee = data.consignee
+			this.model1.userInfo.phone = data.phone
+			this.model1.userInfo.address = data.address.join()
+			this.is_default = data.is_default
+			this.addressId = data.id
+		}
+	},
 	methods: {
 		changeHandler(e) {
 			const { columnIndex, value, values, index, picker = this.$refs.uPicker } = e
@@ -82,17 +98,32 @@ export default {
 		changeDefault(e) {
 			this.is_default = e
 		},
+		async remAddress() {
+			await remAddress(this.addressId, {}, { custom: { auth: true } })
+			uni.$u.toast('删除成功')
+			setTimeout(() => {
+				this.$u.route({
+					url: 'pages/mine/address'
+				})
+			}, 1500)
+		},
 		sumAddressFrom() {
 			this.$refs.form1
 				.validate()
 				.then(async res => {
-					const params = this.model1.userInfo
-					await addAddress(params, { custom: { auth: true } })
+					let params = this.model1.userInfo
+					if (this.addressId) {
+						if (this.is_default == true) {
+							await defaultAddress(this.addressId, {}, { custom: { auth: true } })
+						}
+						await updateAddress(this.addressId, params, { custom: { auth: true } })
+					} else {
+						await addAddress(params, { custom: { auth: true } })
+					}
 					uni.$u.toast('保存成功')
 					setTimeout(() => {
 						this.$u.route({
-							type: 'navigateBack',
-							delta: 1
+							url: 'pages/mine/address'
 						})
 					}, 1500)
 				})
@@ -111,8 +142,12 @@ export default {
 	}
 	.addressform_button {
 		display: flex;
+		flex-direction: column;
+		align-items: center;
 		justify-content: center;
-		.button {
+		.button,
+		.buttona {
+			margin-top: 20rpx;
 			width: 70%;
 			height: 100rpx;
 			text-align: center;
@@ -120,6 +155,9 @@ export default {
 			border-radius: 10rpx;
 			color: #fff;
 			background-color: $uni-color-error;
+		}
+		.buttona {
+			background-color: $uni-text-color-grey;
 		}
 	}
 }

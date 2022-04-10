@@ -5,16 +5,14 @@
 				<view class="left_top">
 					<text class="top_phone">{{ item.consignee }}</text>
 					<text>{{ item.phone }}</text>
-					<text class="top_icon" v-show="item.is_default">默认</text>
+					<text class="top_icon" v-if="item.is_default">默认</text>
 				</view>
 				<view class="left_bottom">
-					<text class="bottom_one">江西省</text>
-					<text class="bottom_two">宜春市</text>
-					<text class="bottom_three">丰城市</text>
-					<text class="bottom_last">213321312321223211</text>
+					<text class="bottom_one">{{ item.address[0] }}</text>
+					<text class="bottom_two">{{ item.address[1] }}</text>
 				</view>
 			</view>
-			<view class="list_right"><u-icon name="edit-pen" size="28" @tap="updateAddress"></u-icon></view>
+			<view class="list_right"><u-icon name="edit-pen" size="28" @tap="updateAddress(item)"></u-icon></view>
 		</view>
 		<view class="addres_nav"><view class="nav_button" @tap="addAddress">新增地址</view></view>
 	</view>
@@ -37,9 +35,26 @@ export default {
 		async getAddressData() {
 			const res = await getAddress({ custom: { auth: true } })
 			this.addressData = res
-			// console.log(this.addressData)
+			let obj = {}
+			this.addressData.forEach((item, index) => {
+				item.address = item.address.split(',')
+				if (item.is_default == true) {
+					obj = item
+					this.addressData.splice(index, 1)
+					return
+				}
+			})
+			this.addressData.unshift(obj)
 		},
-		updateAddress() {},
+		updateAddress(item) {
+			const data = JSON.stringify(item)
+			this.$u.route({
+				url: 'pages/mine/addressForm',
+				params: {
+					data
+				}
+			})
+		},
 		addAddress() {
 			this.$u.route({
 				url: 'pages/mine/addressForm'
@@ -51,13 +66,12 @@ export default {
 
 <style lang="scss">
 .address {
-	margin-bottom: 100rpx;
+	margin-bottom: 500rpx;
 	.address_list {
 		display: flex;
 		align-items: center;
 		padding: 20rpx;
 		height: 130rpx;
-		margin-top: 10rpx;
 		.list_left {
 			width: 80%;
 			margin-left: 60rpx;
