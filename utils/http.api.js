@@ -16,6 +16,8 @@ export const getSwipers = (params, config = {}) => http.get('/carousel', params,
 export const getGoods = (data) => http.get('/goods', data)
 // 获取商品详细
 export const getGoodsDet = (data, config = {}) => http.get('/goods/getgoodsDet', data, config)
+// 查找商品(id)
+export const findgoods = (data, config = {}) => http.get('/goods/findgoods', data, config)
 
 // 加入购物车
 export const addCart = (params, config = {}) => http.post('/cart/addcart', params, config)
@@ -45,3 +47,6 @@ export const remAddress = (id, params, config = {}) => http.delete(`/address/${i
 export const defaultAddress = (id, params, config = {}) => http.put(`/address/def/${id}`, params, config)
 // 修改地址
 export const updateAddress = (id, params, config = {}) => http.put(`/address/${id}`, params, config)
+
+// 获取订单列表
+export const getOrder = (data, config = {}) => http.get('/order/user', data, config)

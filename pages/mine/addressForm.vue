@@ -8,7 +8,9 @@
 					<u--input v-model="model1.userInfo.address" disabled disabledColor="#ffffff" placeholder="请选择地区" border="none"></u--input>
 					<u-icon slot="right" name="arrow-right"></u-icon>
 				</u-form-item>
-				<u-form-item v-if="this.addressId !== 0" label="默认" ref="item1"><u-switch v-model="is_default" @change="changeDefault" activeColor="#d4237a" ></u-switch></u-form-item>
+				<u-form-item v-if="this.addressId !== 0" label="默认" ref="item1">
+					<u-switch v-model="is_default" @change="changeDefault" activeColor="#d4237a"></u-switch>
+				</u-form-item>
 			</u--form>
 		</view>
 		<u-picker :show="showAddress" ref="uPicker" :columns="columns" @confirm="confirm" @cancel="cancelPicker" @change="changeHandler"></u-picker>
@@ -96,6 +98,11 @@ export default {
 			this.showAddress = false
 		},
 		changeDefault(e) {
+			if (!e) {
+				this.is_default = true
+				uni.$u.toast('至少需要一个默认地址')
+				return
+			}
 			this.is_default = e
 		},
 		async remAddress() {

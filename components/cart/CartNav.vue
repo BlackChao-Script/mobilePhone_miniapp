@@ -8,7 +8,7 @@
 			合计:
 			<text class="price_text">￥{{ cartPriceTol }}</text>
 		</view>
-		<view class="nav_button">结算</view>
+		<view class="nav_button" @tap="toCreateOrder">结算</view>
 	</view>
 </template>
 
@@ -16,15 +16,26 @@
 export default {
 	props: {
 		checkedAll: Boolean,
-		cartPriceTol: Number
+		cartPriceTol: Number,
+		CartListData: Array
 	},
-	data() {
-		return {}
-	},
-	onLoad() {},
 	methods: {
 		TapChecked() {
 			this.$emit('TapChecked')
+		},
+		toCreateOrder() {
+			const data = []
+			this.CartListData.forEach(i => {
+				data.push(i.goods_info.id)
+			})
+
+			this.$u.route({
+				url: 'pages/createorder/index',
+				params: {
+					data: data.join(),
+					price: this.cartPriceTol
+				}
+			})
 		}
 	}
 }

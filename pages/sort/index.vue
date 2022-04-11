@@ -8,7 +8,7 @@
 
 <script>
 import { getSort, getSortData } from '@/utils/http.api.js'
-import Tabs from '@/components/sort/Tabs.vue'
+import Tabs from '@/common/Tabs.vue'
 import GoodsList from '@/common/GoodsList.vue'
 
 export default {

@@ -42,7 +42,7 @@
 			</view>
 			<view class="nav_buttons">
 				<view class="button" @tap="addCartData" style="background-color:#d4237a; border-radius: 10% 0 0 10%;">加入购物车</view>
-				<view class="button" style="background-color: #d40a4a; border-radius: 0 10% 10% 0;">立即购买</view>
+				<view class="button" @tap="toOrder" style="background-color: #d40a4a; border-radius: 0 10% 10% 0;">立即购买</view>
 			</view>
 		</view>
 	</view>
@@ -101,6 +101,15 @@ export default {
 		async getCartNum() {
 			const res = await getCartList({ custom: { auth: true } })
 			this.cartList = res.list
+		},
+		toOrder() {
+			this.$u.route({
+				url: 'pages/createorder/index',
+				params: {
+					data: this.goodsData.id,
+					price:this.goodsInfo.goods_price
+				}
+			})
 		}
 	}
 }

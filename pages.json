@@ -56,8 +56,19 @@
 		},
 		{
 			"path": "pages/mine/addressForm",
-			"style":{
-				"navigationBarTitleText":"编辑地址"
+			"style": {
+				"navigationBarTitleText": "编辑地址"
+			}
+		}, {
+			"path": "pages/mine/order",
+			"style": {
+				"navigationBarTitleText": "订单管理"
+			}
+		},
+		{
+			"path": "pages/createorder/index",
+			"style": {
+				"navigationBarTitleText": "生成订单"
 			}
 		}
 	],

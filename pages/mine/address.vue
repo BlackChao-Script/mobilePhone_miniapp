@@ -38,13 +38,13 @@ export default {
 			let obj = {}
 			this.addressData.forEach((item, index) => {
 				item.address = item.address.split(',')
-				if (item.is_default == true) {
-					obj = item
-					this.addressData.splice(index, 1)
-					return
-				}
+				// if (item.is_default == true) {
+				// 	obj = item
+				// 	this.addressData.splice(index, 1)
+				// 	return
+				// }
 			})
-			this.addressData.unshift(obj)
+			// this.addressData.unshift(obj)
 		},
 		updateAddress(item) {
 			const data = JSON.stringify(item)

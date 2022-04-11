@@ -20,7 +20,7 @@
 					</view>
 				</u-swipe-action-item>
 			</u-swipe-action>
-			<CartNav :checkedAll="checkedAll" @TapChecked="TapChecked" :cartPriceTol="cartPriceTol" />
+			<CartNav :checkedAll="checkedAll" @TapChecked="TapChecked" :cartPriceTol="cartPriceTol" :CartListData="CartListData" />
 		</view>
 	</view>
 </template>
