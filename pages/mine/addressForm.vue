@@ -125,11 +125,18 @@ export default {
 						}
 						await updateAddress(this.addressId, params, { custom: { auth: true } })
 					} else {
-						await addAddress(params, { custom: { auth: true } })
+						const data = await getAddress({ custom: { auth: true } })
+						if (data.length == 0) {
+							const data = await addAddress(params, { custom: { auth: true } })
+							await defaultAddress(data.id, {}, { custom: { auth: true } })
+						} else {
+							await addAddress(params, { custom: { auth: true } })
+						}
 					}
 					uni.$u.toast('保存成功')
 					setTimeout(() => {
 						this.$u.route({
+							type: 'redirectTo',
 							url: 'pages/mine/address'
 						})
 					}, 1500)

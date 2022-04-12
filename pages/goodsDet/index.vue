@@ -58,17 +58,19 @@ export default {
 			goodsInfo: {},
 			cartList: [],
 			num: 0,
-			loading: true
+			loading: true,
+			id: 0
 		}
 	},
 	onLoad(options) {
-		this.getGoodsDet(options.id)
+		this.id = options.id
+		this.getGoodsDet()
 		this.getCartNum()
 	},
 	methods: {
-		async getGoodsDet(id) {
+		async getGoodsDet() {
 			const params = {
-				id
+				id: this.id
 			}
 			const res = await getGoodsDet({ params, custom: { auth: true } })
 			this.loading = false
@@ -106,8 +108,8 @@ export default {
 			this.$u.route({
 				url: 'pages/createorder/index',
 				params: {
-					data: this.goodsData.id,
-					price:this.goodsInfo.goods_price
+					data:  this.id,
+					price: this.goodsInfo.goods_price
 				}
 			})
 		}

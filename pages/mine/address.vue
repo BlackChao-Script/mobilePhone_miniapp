@@ -12,14 +12,14 @@
 					<text class="bottom_two">{{ item.address[1] }}</text>
 				</view>
 			</view>
-			<view class="list_right"><u-icon name="edit-pen" size="28" @tap="updateAddress(item)"></u-icon></view>
+			<view class="list_right"><u-icon name="edit-pen" size="28" @tap="updateAddressData(item)"></u-icon></view>
 		</view>
 		<view class="addres_nav"><view class="nav_button" @tap="addAddress">新增地址</view></view>
 	</view>
 </template>
 
 <script>
-import { getAddress } from '@/utils/http.api.js'
+import { getAddress, defaultAddress } from '@/utils/http.api.js'
 
 export default {
 	components: {},
@@ -38,15 +38,9 @@ export default {
 			let obj = {}
 			this.addressData.forEach((item, index) => {
 				item.address = item.address.split(',')
-				// if (item.is_default == true) {
-				// 	obj = item
-				// 	this.addressData.splice(index, 1)
-				// 	return
-				// }
 			})
-			// this.addressData.unshift(obj)
 		},
-		updateAddress(item) {
+		updateAddressData(item) {
 			const data = JSON.stringify(item)
 			this.$u.route({
 				url: 'pages/mine/addressForm',

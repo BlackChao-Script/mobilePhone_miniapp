@@ -53,6 +53,7 @@ export default {
 				for (let i in this.orderData) {
 					this.orderData[i].createdAT = this.orderData[i].createdAT.split('T')[0]
 				}
+				console.log(this.orderData)
 				return
 			}
 			let data = []
@@ -89,7 +90,6 @@ export default {
 					this.orderData = data
 					break
 			}
-			// console.log(this.orderData)
 		}
 	}
 }

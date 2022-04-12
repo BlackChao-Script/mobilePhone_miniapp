@@ -50,3 +50,7 @@ export const updateAddress = (id, params, config = {}) => http.put(`/address/${i
 
 // 获取订单列表
 export const getOrder = (data, config = {}) => http.get('/order/user', data, config)
+// 创建订单
+export const createOrder = (params, config = {}) => http.post('/order', params, config)
+// 更新订单
+export const updataOrder = (id, params, config = {}) => http.put(`/order${id}`, params, config)

@@ -1,6 +1,6 @@
 <template>
 	<view class="sortNav">
-		<view class="sortNav_item" v-for="(item, index) in sortNav_itemData" :key="index">
+		<view class="sortNav_item" v-for="(item, index) in sortNav_itemData" :key="index" @tap="Tapgo(item.path)">
 			<view class="item_icon"><u-icon :name="item.iconName" color="#fff" size="28"></u-icon></view>
 			<view class="item_text">{{ item.text }}</view>
 		</view>
@@ -15,12 +15,14 @@ export default {
 				{
 					iconName: 'grid',
 					color: '#ff0000',
-					text: '全部分类'
+					text: '全部分类',
+					path: '/pages/sort/index'
 				},
 				{
 					iconName: 'file-text',
 					color: '#fabb51',
-					text: '我的订单'
+					text: '我的订单',
+					path: '/pages/mine/order'
 				},
 				{
 					iconName: 'star',
@@ -30,7 +32,20 @@ export default {
 			]
 		}
 	},
-	methods: {}
+	methods: {
+		Tapgo(path) {
+			if (path == '/pages/sort/index') {
+				this.$u.route({
+					type: 'reLaunch',
+					url: path
+				})
+			} else {
+				this.$u.route({
+					url: path
+				})
+			}
+		}
+	}
 }
 </script>
 

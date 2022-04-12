@@ -132,8 +132,8 @@ export default {
 			}
 			if (params.number <= 1) {
 				uni.$u.toast('最少剩1件商品')
-			} else if (params.number >= 5) {
-				uni.$u.toast('没见商品最多不超过5件')
+			} else if (params.number > 5) {
+				uni.$u.toast('每件商品最多不超过5件')
 			} else {
 				await updateCart(id, params, { custom: { auth: true } })
 				this.getCartListData()

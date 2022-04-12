@@ -25,13 +25,18 @@ export default {
 		},
 		toCreateOrder() {
 			const data = []
+			const id = []
 			this.CartListData.forEach(i => {
-				data.push(i.goods_info.id)
+				if (i.selected == true) {
+					data.push(i.goods_info.id)
+					id.push(i.id)
+				}
 			})
 
 			this.$u.route({
 				url: 'pages/createorder/index',
 				params: {
+					id: id.join(),
 					data: data.join(),
 					price: this.cartPriceTol
 				}
