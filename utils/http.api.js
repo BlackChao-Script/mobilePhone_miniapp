@@ -53,4 +53,4 @@ export const getOrder = (data, config = {}) => http.get('/order/user', data, con
 // 创建订单
 export const createOrder = (params, config = {}) => http.post('/order', params, config)
 // 更新订单
-export const updataOrder = (id, params, config = {}) => http.put(`/order${id}`, params, config)
+export const updataOrder = (id, params, config = {}) => http.put(`/order/${id}`, params, config)

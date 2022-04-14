@@ -1,9 +1,35 @@
 <template>
-	<view class="order"><Tabs :sortList="sortList" @clickChangTab="clickChangTab" /></view>
+	<view class="order">
+		<Tabs :sortList="sortList" @clickChangTab="clickChangTab" />
+		<view class="order_box" v-for="item in orderData" :key="item.id">
+			<view class="box_title">
+				<view class="title_time">订单时间：{{ item.createdAT }}</view>
+				<view class="title_start" v-if="item.state == 0">未支付</view>
+				<view class="title_start" v-else-if="item.state == 1">已支付</view>
+				<view class="title_start" v-else-if="item.state == 2">已发货</view>
+				<view class="title_start" v-else-if="item.state == 3">已签收</view>
+				<view class="title_start" v-else>取消</view>
+			</view>
+			<view class="box_item" v-for="value in item.goods_info" :key="value.id">
+				<view class="item_price"><image class="price_img" :src="value.goods_img"></image></view>
+				<view class="item_content">
+					<view class="content_title">
+						<view class="title_a">{{ value.goods_name }}</view>
+						<view class="title_b">全场包邮</view>
+					</view>
+					<view class="content_bottom">
+						<view class="bottom_price">￥{{ value.goods_price }}</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		<u-loading-icon :show="showLogin"></u-loading-icon>
+		<u-empty v-if="orderData.length == 0" icon="https://cdn.uviewui.com/uview/empty/data.png"></u-empty>
+	</view>
 </template>
 
 <script>
-import { getOrder } from '@/utils/http.api.js'
+import { getOrder, findgoods, updataOrder } from '@/utils/http.api.js'
 import Tabs from '@/common/Tabs.vue'
 
 export default {
@@ -38,61 +64,122 @@ export default {
 					name: '取消'
 				}
 			],
-			orderData: []
+			orderData: [],
+			showLogin: true
 		}
 	},
 	onLoad() {
 		this.clickChangTab()
 	},
 	methods: {
-		async clickChangTab(item) {
-			let res = []
-			if (item == undefined) {
-				res = await getOrder({ custom: { auth: true } })
-				this.orderData = res.list
-				for (let i in this.orderData) {
-					this.orderData[i].createdAT = this.orderData[i].createdAT.split('T')[0]
-				}
-				console.log(this.orderData)
-				return
+		getGoodsInfo(ids) {
+			const params = {
+				ids
 			}
+			return new Promise(resolve => {
+				findgoods({ params }).then(res => {
+					resolve(res)
+				})
+			})
+		},
+		async asyncFn(ids) {
+			const resData = await this.getGoodsInfo(ids)
+			return resData
+		},
+		async getOrderData(id) {
+			const params = {
+				state: 1
+			}
+			let res = await getOrder({ custom: { auth: true } })
+			if (id == 5) {
+				if (res.list.toString() == this.orderData.toString()) return
+			}
+			res.list.forEach(async i => {
+				await updataOrder(i.id, params, { custom: { auth: true } })
+				i.createdAT = i.createdAT.split('T')[0]
+				this.asyncFn(i.goods_info).then(value => (i.goods_info = value))
+			})
+			this.orderData = res.list
 			let data = []
-			const finorderData = async id => {
-				let j = 0
-				res = await getOrder({ custom: { auth: true } })
-				this.orderData = res.list
-				for (let i in this.orderData) {
-					this.orderData[i].createdAT = this.orderData[i].createdAT.split('T')[0]
-					if (this.orderData[i].state == id) {
-						data[j++] = this.orderData[i]
+			let j = 0
+			const findId = idData => {
+				res.list.forEach(i => {
+					if (i.state == idData) {
+						data[j++] = i
 					}
-				}
+				})
+				this.orderData = data
 			}
-			switch (item.id) {
+			switch (id) {
 				case 0:
-					finorderData(0)
-					this.orderData = data
+					findId(0)
 					break
 				case 1:
-					finorderData(1)
-					this.orderData = data
+					findId(1)
 					break
 				case 2:
-					finorderData(2)
-					this.orderData = data
+					findId(2)
 					break
 				case 3:
-					finorderData(3)
-					this.orderData = data
+					findId(3)
 					break
 				case 4:
-					finorderData(4)
-					this.orderData = data
+					findId(4)
 					break
+			}
+			this.showLogin = false
+		},
+		clickChangTab(item) {
+			if (item == undefined) {
+				this.getOrderData(5)
+			} else {
+				this.getOrderData(item.id)
 			}
 		}
 	}
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.order {
+	.order_box {
+		padding: 30rpx;
+		.box_title {
+			display: flex;
+			font-size: 26rpx;
+			color: $uni-text-color-grey;
+			.title_time {
+				width: 85%;
+			}
+		}
+		.box_item {
+			display: flex;
+			.item_price {
+				width: 30%;
+				height: 250rpx;
+				.price_img {
+					width: 100%;
+					height: 100%;
+				}
+			}
+			.item_content {
+				position: relative;
+				.content_title {
+					.title_a {
+						margin-top: 20rpx;
+					}
+					.title_b {
+						margin-top: 10rpx;
+						font-size: 26rpx;
+						color: $uni-text-color-grey;
+					}
+				}
+				.content_bottom {
+					position: absolute;
+					bottom: 30rpx;
+				}
+			}
+		}
+	}
+}
+</style>
