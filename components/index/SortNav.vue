@@ -53,6 +53,7 @@ export default {
 .sortNav {
 	display: flex;
 	height: 200rpx;
+	width: 100%;
 	margin: 20rpx 0;
 	background-color: $uni-bg-color;
 	.sortNav_item {

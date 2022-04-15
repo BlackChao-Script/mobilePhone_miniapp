@@ -6,7 +6,7 @@
 				<u-swipe-action-item v-for="item in CartListData" :key="item.id" :options="options" @click="remCartItem(item.id)">
 					<view class="box_list">
 						<view class="list_checkbox"><checkbox color="#d4237a" :checked="item.selected" @tap="tapcheckItem(item.id)" /></view>
-						<view class="list_img"><image :src="item.goods_info.goods_img"></image></view>
+						<view class="list_img"><image :src="item.goods_info.goods_img" mode="aspectFit"> </image></view>
 						<view class="list_content">
 							<view class="content_num">×{{ item.number }}</view>
 							<view class="content_name u-line-1">{{ item.goods_info.goods_name }}</view>

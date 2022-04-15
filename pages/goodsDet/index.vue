@@ -1,6 +1,6 @@
 <template>
 	<view class="goodsDet">
-		<view class="goodsDet_img"><image class="img" :src="goodsInfo.goods_img"></image></view>
+		<view class="goodsDet_img"><image class="img" :src="goodsInfo.goods_img" mode="aspectFit"></image></view>
 		<view class="loading" v-if="loading"><u-loading-icon color="#d4237a"></u-loading-icon></view>
 		<view class="goodsDet_content" v-else>
 			<view class="content_name">{{ goodsInfo.goods_name }}</view>

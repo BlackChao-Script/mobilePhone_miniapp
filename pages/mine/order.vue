@@ -11,7 +11,7 @@
 				<view class="title_start" v-else>取消</view>
 			</view>
 			<view class="box_item" v-for="value in item.goods_info" :key="value.id">
-				<view class="item_price"><image class="price_img" :src="value.goods_img"></image></view>
+				<view class="item_price"><image class="price_img" :src="value.goods_img" mode="aspectFit"></image></view>
 				<view class="item_content">
 					<view class="content_title">
 						<view class="title_a">{{ value.goods_name }}</view>
@@ -21,6 +21,13 @@
 						<view class="bottom_price">￥{{ value.goods_price }}</view>
 					</view>
 				</view>
+			</view>
+			<view class="box_bottom">
+				<view class="bottom_left">
+					<view class="left_orderid">订单编号：{{ item.order_number }}</view>
+					<view class="left_price">价格：￥{{ item.total }}</view>
+				</view>
+				<view class="bottom_right" v-if="item.state != 4"><view class="rigth_button" @tap="tapCancelOrder(item.id)">取消订单</view></view>
 			</view>
 		</view>
 		<u-loading-icon :show="showLogin"></u-loading-icon>
@@ -95,11 +102,13 @@ export default {
 				if (res.list.toString() == this.orderData.toString()) return
 			}
 			res.list.forEach(async i => {
-				await updataOrder(i.id, params, { custom: { auth: true } })
+				if(i.state !== 4){
+					await updataOrder(i.id, params, { custom: { auth: true } })
+				}
 				i.createdAT = i.createdAT.split('T')[0]
 				this.asyncFn(i.goods_info).then(value => (i.goods_info = value))
 			})
-			this.orderData = res.list
+			this.orderData = res.list.reverse()
 			let data = []
 			let j = 0
 			const findId = idData => {
@@ -135,6 +144,23 @@ export default {
 			} else {
 				this.getOrderData(item.id)
 			}
+		},
+		async tapCancelOrder(id) {
+			const params = {
+				state: 4
+			}
+			await updataOrder(id, params, { custom: { auth: true } })
+			let res = await getOrder({ custom: { auth: true } })
+			res.list.forEach(async i => {
+				i.createdAT = i.createdAT.split('T')[0]
+				this.asyncFn(i.goods_info).then(value => (i.goods_info = value))
+			})
+			this.orderData = res.list.reverse()
+			uni.$u.toast('取消订单成功')
+			this.$u.route({
+				type:'reLaunch',
+				url:'pages/mine/order'
+			})
 		}
 	}
 }
@@ -177,6 +203,39 @@ export default {
 				.content_bottom {
 					position: absolute;
 					bottom: 30rpx;
+				}
+			}
+		}
+		.box_bottom {
+			display: flex;
+			padding-bottom: 20rpx;
+			border-bottom: 1rpx solid $uni-text-color-grey;
+			.bottom_left {
+				width: 80%;
+				display: flex;
+				flex-direction: column;
+				font-size: 26rpx;
+				color: $uni-text-color-grey;
+				.left_orderid {
+				}
+
+				.left_price {
+					margin-top: 10rpx;
+				}
+			}
+
+			.bottom_right {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				.rigth_button {
+					text-align: center;
+					line-height: 60rpx;
+					width: 200rpx;
+					height: 60rpx;
+					color: #fff;
+					background-color: $uni-color-error;
+					border-radius: 10rpx;
 				}
 			}
 		}
