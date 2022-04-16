@@ -18,6 +18,8 @@ export const getGoods = (data) => http.get('/goods', data)
 export const getGoodsDet = (data, config = {}) => http.get('/goods/getgoodsDet', data, config)
 // 查找商品(id)
 export const findgoods = (data, config = {}) => http.get('/goods/findgoods', data, config)
+// 商品模糊收缩
+export const serchGoods = (data, config = {}) => http.get('/goods/serch', data, config)
 
 // 加入购物车
 export const addCart = (params, config = {}) => http.post('/cart/addcart', params, config)

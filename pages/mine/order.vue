@@ -1,7 +1,7 @@
 <template>
 	<view class="order">
 		<Tabs :sortList="sortList" @clickChangTab="clickChangTab" />
-		<view class="order_box" v-for="item in orderData" :key="item.id">
+		<view class="order_box" v-for="item in orderData" :key="item.id" v-if="!showLogin">
 			<view class="box_title">
 				<view class="title_time">订单时间：{{ item.createdAT }}</view>
 				<view class="title_start" v-if="item.state == 0">未支付</view>
@@ -30,7 +30,7 @@
 				<view class="bottom_right" v-if="item.state != 4"><view class="rigth_button" @tap="tapCancelOrder(item.id)">取消订单</view></view>
 			</view>
 		</view>
-		<u-loading-icon :show="showLogin"></u-loading-icon>
+		<u-loading-icon v-else></u-loading-icon>
 		<u-empty v-if="orderData.length == 0" icon="https://cdn.uviewui.com/uview/empty/data.png"></u-empty>
 	</view>
 </template>
@@ -98,11 +98,12 @@ export default {
 				state: 1
 			}
 			let res = await getOrder({ custom: { auth: true } })
+			this.showLogin = false
 			if (id == 5) {
 				if (res.list.toString() == this.orderData.toString()) return
 			}
 			res.list.forEach(async i => {
-				if(i.state !== 4){
+				if (i.state !== 4) {
 					await updataOrder(i.id, params, { custom: { auth: true } })
 				}
 				i.createdAT = i.createdAT.split('T')[0]
@@ -136,7 +137,6 @@ export default {
 					findId(4)
 					break
 			}
-			this.showLogin = false
 		},
 		clickChangTab(item) {
 			if (item == undefined) {
@@ -158,8 +158,8 @@ export default {
 			this.orderData = res.list.reverse()
 			uni.$u.toast('取消订单成功')
 			this.$u.route({
-				type:'reLaunch',
-				url:'pages/mine/order'
+				type: 'reLaunch',
+				url: 'pages/mine/order'
 			})
 		}
 	}
