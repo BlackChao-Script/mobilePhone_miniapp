@@ -8,7 +8,7 @@ mobilePhone商城 项目是一套电商系统，包括: mobilePhone_mall (pc网�
 
 **后台管理系统包含**：数据面板、轮播图管理、商品管理、订单管理、分类管理。
 
-本仓库中的源码是mobilePhone商城的后台管理系统项目，技术栈为: `Vue3 + Ts + Echarts + Element_plus` 。其它源码在另外几个仓库中。
+本仓库中的源码是mobilePhone商城的小程序与PE端项目，技术栈为: `uniapp + uViewUI` 。其它源码在另外几个仓库中。
 
 项目仓库地址：
 
@@ -23,10 +23,18 @@ mobilePhone商城 项目是一套电商系统，包括: mobilePhone_mall (pc网�
 
 [![LJ3H6f.png](https://s1.ax1x.com/2022/04/16/LJ3H6f.png)](https://imgtu.com/i/LJ3H6f)
 
-商品管理
+搜索
 
-![](https://s3.bmp.ovh/imgs/2022/04/02/860b5a03c5d0d910.png)
+[![LJ3vkj.png](https://s1.ax1x.com/2022/04/16/LJ3vkj.png)](https://imgtu.com/i/LJ3vkj)
 
-分类管理
+分类
 
-![](https://s3.bmp.ovh/imgs/2022/04/02/bac9fee97cc64aa3.png)
+[![LJ8PXT.png](https://s1.ax1x.com/2022/04/16/LJ8PXT.png)](https://imgtu.com/i/LJ8PXT)
+
+购物车
+
+[![LJ8VAJ.png](https://s1.ax1x.com/2022/04/16/LJ8VAJ.png)](https://imgtu.com/i/LJ8VAJ)
+
+订单
+
+[![LJ8n91.png](https://s1.ax1x.com/2022/04/16/LJ8n91.png)](https://imgtu.com/i/LJ8n91)
